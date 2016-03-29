@@ -1,0 +1,34 @@
+Cabnet builder
+
+class box
+	height
+	length
+	depth
+	counter height
+	counter overhang
+	material thickness
+	door locaton
+	door thickness
+	
+	strechers/tops
+	toe kicks(inset)
+	gabbles/sides
+	shelves
+	drawers
+	material
+	Countertop Anchoring Cleats
+	bottoms
+	tops
+	Face Frame
+	drawer runner
+	brackets
+	backpannel
+	
+functions
+	parts layout
+	wireframe
+	measure
+	camera
+	
+	
+	
