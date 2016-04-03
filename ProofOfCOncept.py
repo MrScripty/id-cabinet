@@ -76,7 +76,7 @@ class ObjectBoard():
 
 
 
-def Allign(objectList, allignAxis=1):
+def Allign(objectList, allignAxis=1, allignShift=[1,0,0]):
     count = 0
     for objects in objectList:
         if count == 0:
@@ -105,7 +105,7 @@ def MakeStuff(amount=12):
     stuff = []
     count = 0
     while count < amount:
-        stuff.append(ObjectBoard(name="Board"+str(count), size=[6,6,6], loc=[0,0,12]))
+        stuff.append(ObjectBoard(name="Board"+str(count), size=[(6+count),6,6], loc=[0,0,12]))
         print("Name", stuff[count].Name())
         print("Loc", stuff[count].Location())
         print("Size", stuff[count].Size())
