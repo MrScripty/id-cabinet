@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/QAPage">
+<head>
+
+<title>Python performance with Blender operators - Blender Stack Exchange</title>
+    <link rel="shortcut icon" href="//cdn.sstatic.net/Sites/blender/img/favicon.ico?v=2fd6a686ff27">
+    <link rel="apple-touch-icon image_src" href="//cdn.sstatic.net/Sites/blender/img/apple-touch-icon.png?v=2bba687a240f">
+    <link rel="search" type="application/opensearchdescription+xml" title="Blender Stack Exchange" href="/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@StackBlender" />
+    <meta name="twitter:domain" content="blender.stackexchange.com"/>
+    <meta property="og:type" content="website" />    
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="http://cdn.sstatic.net/Sites/blender/img/apple-touch-icon@2.png?v=68358e232572&a" />
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="Python performance with Blender operators" />
+    <meta name="twitter:description" property="og:description" itemprop="description" content="Most operators cause implicit scene updates. It means that every object in the scene is checked and updated if necessary. If you add e.g. mesh primitives using bpy.ops.mesh.primitive_cube_add() in a " />
+    <meta property="og:url" content="http://blender.stackexchange.com/questions/7358/python-performance-with-blender-operators/7360"/>
+    <link rel="canonical" href="http://blender.stackexchange.com/questions/7358/python-performance-with-blender-operators/7360" />
+
+    
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdn.sstatic.net/Js/stub.en.js?v=c1b24050b752"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.sstatic.net/Sites/blender/all.css?v=61e1edbd8a4a">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question &#39;Python performance with Blender operators&#39;" href="/feeds/question/7358">
+            <meta name="twitter:app:country" content="US" />
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS" />
+            <meta name="twitter:app:id:iphone" content="871299723" />
+            <meta name="twitter:app:url:iphone" content="se-zaphod://blender.stackexchange.com/questions/7358/python-performance-with-blender-operators/7360" />
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS" />
+            <meta name="twitter:app:id:ipad" content="871299723" />
+            <meta name="twitter:app:url:ipad" content="se-zaphod://blender.stackexchange.com/questions/7358/python-performance-with-blender-operators/7360" />
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://blender.stackexchange.com/questions/7358/python-performance-with-blender-operators/7360">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        <script>
+        
+            StackExchange.ready(function () {
+
+                StackExchange.using("postValidation", function () {
+                    StackExchange.postValidation.initOnBlurAndSubmit($('#post-form'), 2, 'answer');
+                });
+
+                
+                StackExchange.question.init({votesCast:[],autoShowCommentHelp:true,showAnswerHelp:true,totalCommentCount:2,shownCommentCount:2,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:7358});
+
+                styleCode();
+
+                    StackExchange.realtime.subscribeToQuestion('502', '7358');
+                                                                    StackExchange.using("gps", function () { StackExchange.gps.trackOutboundClicks('#content', '.post-text'); });
+
+            });
+        </script>
+
+
+    <script>
+        StackExchange.ready(function () {
+            StackExchange.realtime.init('wss://qa.sockets.stackexchange.com,ws://qa.sockets.stackexchange.com');
+            StackExchange.realtime.subscribeToReputationNotifications('502');
+                StackExchange.realtime.subscribeToTopBarNotifications('502');
+        });
+    </script>
+    <script>
+        StackExchange.init({"locale":"en","stackAuthUrl":"https://stackauth.com","networkMetaHostname":"meta.stackexchange.com","serverTime":1461972101,"routeName":"Questions/Show","styleCode":true,"enableUserHovercards":true,"snippets":{"enabled":false,"domain":"stacksnippets.net"},"site":{"name":"Blender Stack Exchange","description":"Q&A for people who use Blender to create 3D graphics, animations, or games","isNoticesTabEnabled":true,"recaptchaPublicKey":"6LdsB7sSAAAAAAzjgEF_Hd8vXv-C42sa_KyofaGR","recaptchaAudioLang":"en","enableNewTagCreationWarning":true,"insertSpaceAfterNameTabCompletion":false,"id":502,"enableSocialMediaInSharePopup":true},"user":{"fkey":"45949e0d89399c3d084799a7d8379f1b","rep":56,"isRegistered":true,"userType":3,"userId":22950,"accountId":5707622,"gravatar":"<div class=\"gravatar-wrapper-32\"><img src=\"https://www.gravatar.com/avatar/cad5085a0d7fad2f9fb041d0bbad9fe7?s=32&amp;d=identicon&amp;r=PG\" alt=\"\" width=\"32\" height=\"32\"></div>","profileUrl":"http://blender.stackexchange.com/users/22950/jeremy-bayley","canSeeDeletedPosts":false},"realtime":{"newest":true,"active":true,"tagged":true}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.en.js":"b6d6817e1b17","js/moderator.en.js":"ba888756f7ac","js/full-anon.en.js":"60f2749dd497","js/full.en.js":"8abddafd2264","js/wmd.en.js":"cbbd580e99ac","js/third-party/jquery.autocomplete.min.js":"e5f01e97f7c3","js/third-party/jquery.autocomplete.min.en.js":"","js/mobile.en.js":"a37bf4b341d0","js/help.en.js":"c8004cc0095d","js/tageditor.en.js":"bd4fb7a0a976","js/tageditornew.en.js":"1639655490c5","js/inline-tag-editing.en.js":"33defe45205f","js/revisions.en.js":"2faaeaae2529","js/review.en.js":"ea64447353f2","js/tagsuggestions.en.js":"d1ff9b84abe5","js/post-validation.en.js":"6c8439daf24d","js/explore-qlist.en.js":"e71f14781288","js/events.en.js":"4ffe56cad419","js/keyboard-shortcuts.en.js":"c1cbae70a2a5","js/external-editor.en.js":"ea2f10bafe08"});
+        StackExchange.using("gps", function() {
+             StackExchange.gps.init(true);
+        });
+    </script>
+    
+</head>
+<body class="question-page new-topbar">
+    <noscript><div id="noscript-padding"></div></noscript>
+    
+
+
+
+
+    <div id="notify-container"></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+
+<div class="topbar-dialog siteSwitcher-dialog dno">
+    <div class="header">
+        <h3><a href="//blender.stackexchange.com">current community</a></h3>
+    </div>
+    <div class="modal-content current-site-container">
+        <ul class="current-site">
+                <li>
+                        <div class="related-links">
+                    <a href="http://chat.stackexchange.com" class="js-gps-track"     data-gps-track="site_switcher.click({ item_type:6 })"
+>chat</a>
+                    <a href="/users/logout" class="js-gps-track"     data-gps-track="site_switcher.click({ item_type:8 })"
+>log out</a>
+    </div>
+
+
+
+
+    <a href="//blender.stackexchange.com"
+       class="current-site-link site-link js-gps-track"
+       data-id="502"
+       data-gps-track="
+        site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-blender" title="Blender"></div>
+        Blender
+    </a>
+
+                </li>
+                <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    
+
+
+
+    <a href="http://meta.blender.stackexchange.com"
+       class="site-link js-gps-track"
+       data-id="503"
+       data-gps-track="
+            site.switch({ target_site:503, item_type:3 }),
+        site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-blendermeta" title="Blender Meta"></div>
+        Blender Meta
+    </a>
+
+                </li>
+                    </ul>
+    </div>
+    <div class="header" id="your-communities-header">
+        <h3>
+                <a href="//stackexchange.com/users/5707622/?tab=accounts">your communities</a>
+        </h3>
+            
+            <a href="#" id="edit-pinned-sites">edit</a>
+            <a href="#" id="cancel-pinned-sites" style="display: none;">cancel</a>
+    </div>
+    <div class="modal-content" id="your-communities-section">
+            
+            <ul class="my-sites">
+                    <li>
+                        
+
+
+
+    <a href="//blender.stackexchange.com"
+       class="site-link js-gps-track"
+       data-id="502"
+       data-gps-track="
+            site.switch({ target_site:502, item_type:3 }),
+        site_switcher.click({ item_type:1 })">
+        <div class="site-icon favicon favicon-blender" title="Blender"></div>
+        Blender
+            <span class="rep-score">56</span>
+    </a>
+
+                    </li>
+                    <li>
+                        
+
+
+
+    <a href="//stackoverflow.com"
+       class="site-link js-gps-track"
+       data-id="1"
+       data-gps-track="
+            site.switch({ target_site:1, item_type:3 }),
+        site_switcher.click({ item_type:1 })">
+        <div class="site-icon favicon favicon-stackoverflow" title="Stack Overflow"></div>
+        Stack Overflow
+            <span class="rep-score">3</span>
+    </a>
+
+                    </li>
+                    <li>
+                        
+
+
+
+    <a href="//superuser.com"
+       class="site-link js-gps-track"
+       data-id="3"
+       data-gps-track="
+            site.switch({ target_site:3, item_type:3 }),
+        site_switcher.click({ item_type:1 })">
+        <div class="site-icon favicon favicon-superuser" title="Super User"></div>
+        Super User
+            <span class="rep-score">1</span>
+    </a>
+
+                    </li>
+            </ul>
+                <div class="pinned-site-editor-container" style="display: none;">
+                    <input id="js-site-search-txt"
+                           type="text"
+                           class="site-filter-input"
+                           value=""
+                           placeholder="Add a Stack Exchange community"/>
+                    <input type="submit" id="pin-site-btn" value="Add" disabled="disabled"/>
+                    <ul class="js-found-sites found-sites"></ul>
+                    <ul class="pinned-site-list sortable" data-custom-list="False">
+                    </ul>
+                    <input type="submit" value="Save" id="save-pinned-sites-btn" disabled="disabled"/>
+                    <a href="#" id="reset-pinned-sites">reset to default list</a>
+                </div>
+    </div>
+    <div class="header">
+        <h3><a href="//stackexchange.com/sites">more stack exchange communities</a></h3>
+        <a href="http://blog.stackoverflow.com" class="fr">company blog</a>
+    </div>
+    <div class="modal-content">
+            <div class="child-content"></div>
+    </div>
+</div>
+        </div>
+
+        <div class="network-items">
+
+            <a href="//stackexchange.com"
+               class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track"
+               data-gps-track="site_switcher.show"
+               title="A list of all 155 Stack Exchange sites">
+                <span class="hidden-text">Stack Exchange</span>
+            </a>
+
+    <a href="#"
+       class="topbar-icon icon-inbox yes-hover js-inbox-button"
+       title="Recent inbox messages">
+        <span class="hidden-text">Inbox</span>
+        <span class="unread-count" style="display:none"></span>
+    </a>
+    <a href="#"
+       class="topbar-icon icon-achievements yes-hover js-achievements-button "
+       data-unread-class=""
+       title="Recent achievements: reputation, badges, and privileges earned">
+        <span class="hidden-text">Reputation and Badges</span>
+        <span class="unread-count" style="display:none">
+            
+        </span>
+    </a>
+        </div>
+
+        <div class="topbar-links">
+
+                <a href="/users/22950/jeremy-bayley" 
+                   class="profile-me js-gps-track" 
+                   data-gps-track="profile_summary.click()">
+                    
+                    <div class="gravatar-wrapper-24" title="Jeremy Bayley"><img src="https://www.gravatar.com/avatar/cad5085a0d7fad2f9fb041d0bbad9fe7?s=48&amp;d=identicon&amp;r=PG" alt="" width="24" height="24" class="avatar-me js-avatar-me"></div>
+
+                    <div class="links-container topbar-flair">
+
+                        <span class="reputation" title="your reputation: 56">
+                            56
+                        </span>
+<span title="6 bronze badges"><span class="badge3"></span><span class="badgecount">6</span></span>                    </div>
+                </a>
+                <div class="links-container">
+                    <span class="topbar-menu-links">
+
+
+
+
+    <a href="#" class="icon-help js-help-button" title="Help Center and other resources">
+        help
+        <span class="triangle"></span>
+    </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                    <li>
+                        <a href="//meta.blender.stackexchange.com" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                            Meta
+                            <span class="item-summary">
+                                Discuss the workings and policies of this site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                        About Us
+                        <span class="item-summary">
+                            Learn more about Stack Overflow the company
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://business.stackoverflow.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                        Business
+                        <span class="item-summary">
+                            Learn more about hiring developers or posting ads with us
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+                    </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                    <input name="q" type="text" placeholder="Search Q&amp;A" value="" tabindex="1" autocomplete="off" maxlength="240" />
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        StackExchange.ready(function() { StackExchange.topbar.init(); });
+    </script>
+
+    <div class="container">
+        <div id="header">
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="/" >
+                    Blender
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                        <li class="youarehere"><a id="nav-questions" href="/questions">Questions</a></li>
+                        <li><a id="nav-tags" href="/tags">Tags</a></li>
+                        <li><a id="nav-users" href="/users">Users</a></li>
+                        <li><a id="nav-badges" href="/help/badges">Badges</a></li>
+                                                <li><a id="nav-unanswered" href="/unanswered">Unanswered</a></li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion"  href="/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content">
+            
+
+<div itemscope itemtype="http://schema.org/Question">
+    <link itemprop="image" href="//cdn.sstatic.net/Sites/blender/img/apple-touch-icon.png?v=2bba687a240f">
+			<div id="question-header">
+                <h1 itemprop="name"><a href="/questions/7358/python-performance-with-blender-operators" class="question-hyperlink">Python performance with Blender operators</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="7358"  id="question">
+
+        <table>
+        <tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input type="hidden" name="_id_" value="7358">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear (click again to undo)">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">10</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful (click again to undo)">down vote</a>
+
+        <a class="star-off" href="#">favorite</a>
+        <div class="favoritecount"><b>4</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p>In my script, I have <code>for</code> loop over many cube objects (~1000) and the treatment is very slow. Looking more in details, I notice that in the same amount of loops:</p>
+
+<ol>
+<li><p>if I use python operation or simple blender operation like</p>
+
+<pre><code>obj = bpy.data.objects[obj_name]
+</code></pre>
+
+<p>or </p>
+
+<pre><code>obj.select = True
+</code></pre>
+
+<p>it takes less than 0.08s (for all 1000 objects)</p></li>
+<li><p>but as soon as I start using blender operators like:</p>
+
+<pre><code>bpy.ops.object.select_pattern() # or
+bpy.ops.object.duplicate() # or
+bpy.ops.object.location_clear() # or
+bpy.ops.object.transform_apply() # etc.
+</code></pre>
+
+<p>then, the performance drops down deeply with more than 6s for the same amount of objects.</p></li>
+</ol>
+
+<p>And, a last information, if I reduce the amount of objects from 1000 to 50, the same set of operations with <code>bpy.ops</code> is 0.03s - so extrapolating, it would be 0.6s for the 1000 objects and not 6s. It is as is with 1000 objects, we loose a factor 10 in speed in comparison than with 50 objects.</p>
+
+<p>I tried reducing the complexity of my mesh changing the cubes in planes but it had no effect at whole on performance.</p>
+
+<p>Is there something particular to know to improve these performance or a way to use the <code>bpy.ops</code> methods with better performances? Obviously, I am missing something important probably.</p>
+    </div>
+    <div class="post-taglist">
+        <a href="/questions/tagged/python" class="post-tag" title="show questions tagged &#39;python&#39;" rel="tag">python</a> <a href="/questions/tagged/performance" class="post-tag" title="show questions tagged &#39;performance&#39;" rel="tag">performance</a> 
+    </div>
+    <table class="fw">
+    <tr>
+    <td class="vt">
+<div class="post-menu"><a href="/q/7358/22950" title="short permalink to this question" class="short-link" id="link-post-7358">share</a><span class="lsep">|</span><a href="/posts/7358/edit" class="suggest-edit-post" title="revise and improve this post">edit</a><span class="lsep">|</span><a href="#"
+       class="flag-post-link"
+       title="flag this post for serious problems or moderator attention"
+       data-postid="7358">flag</a></div>        
+    </td>
+    <td align="right" class="post-signature">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="/posts/7358/revisions" title="show all edits to this post">edited <span title="2014-02-26 22:48:47Z" class="relativetime">Feb 26 '14 at 22:48</span></a>
+    </div>
+    <div class="user-gravatar32">
+        <a href="/users/1363/codemanx"><div class="gravatar-wrapper-32"><img src="https://i.stack.imgur.com/oskiS.png?s=32&amp;g=1" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="/users/1363/codemanx">CoDEmanX</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 15,372" dir="ltr">15.4k</span><span title="19 silver badges"><span class="badge2"></span><span class="badgecount">19</span></span><span title="56 bronze badges"><span class="badge3"></span><span class="badgecount">56</span></span>
+        </div>
+    </div>
+</div>    </td>
+    <td class="post-signature owner">
+        <div class="user-info ">
+    <div class="user-action-time">
+        asked <span title="2014-02-26 21:38:06Z" class="relativetime">Feb 26 '14 at 21:38</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="/users/1314/salvatore"><div class="gravatar-wrapper-32"><img src="https://www.gravatar.com/avatar/3ebdc27f2170ddca81eafbe81f173aaf?s=32&amp;d=identicon&amp;r=PG&amp;f=1" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="/users/1314/salvatore">Salvatore</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">172</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="5 bronze badges"><span class="badge3"></span><span class="badgecount">5</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </table>
+</div>
+</td>
+        </tr>
+                
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-7358" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0"
+                       data-canpost="true"
+                       data-cansee="false"
+                       data-comments-unavailable="false"
+                       data-addlink-disabled="false">
+
+
+
+    <tr id="comment-11754" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of &#39;useful comment&#39; votes received"
+                                      class="cool">1</span>
+                        </td>
+                        <td>
+                                <a class="comment-up comment-up-off" title="this comment adds something useful to the post">upvote</a>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                                <td>
+                                    <a class="comment-flag" title="Flag this comment for serious problems or moderator attention">flag</a>
+                                </td>
+                        </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Related: <a href="http://blender.stackexchange.com/q/2848/599">blender.stackexchange.com/q/2848/599</a></span>
+                    &ndash;&nbsp;<a href="/users/599/gandalf3"
+                       title="80,372 reputation"
+                       class="comment-user">gandalf3<span class="mod-flair" title="moderator">&#9830;</span></a>
+                <span class="comment-date" dir="ltr"><span title="2014-02-26 21:40:18Z" class="relativetime-clean">Feb 26 '14 at 21:40</span></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-11813" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                <a class="comment-up comment-up-off" title="this comment adds something useful to the post">upvote</a>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                                <td>
+                                    <a class="comment-flag" title="Flag this comment for serious problems or moderator attention">flag</a>
+                                </td>
+                        </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@CoDEmanX: Thanks, this is clear, it helps a lot. I will review all my bpy.ops usage.</span>
+                    &ndash;&nbsp;<a href="/users/1314/salvatore"
+                       title="172 reputation"
+                       class="comment-user owner">Salvatore</a>
+                <span class="comment-date" dir="ltr"><span title="2014-02-27 22:18:42Z" class="relativetime-clean">Feb 27 '14 at 22:18</span></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+				    <tfoot>
+					    <tr>
+						    <td></td>
+						    <td class="comment-form">
+							    <form id="add-comment-7358" 
+							          class="" 
+							          data-placeholdertext="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."></form>
+						    </td>
+					    </tr>
+				    </tfoot>
+		    </table>
+	    </div>
+
+        <div id="comments-link-7358" >
+
+                <a class="js-add-link comments-link "
+                   title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."
+                   href=#>add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href=# onclick=""></a>
+        </div>         
+    </td>
+</tr>        </table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								1 Answer
+                                <span style="display:none;" itemprop="answerCount">1</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="/questions/7358/python-performance-with-blender-operators?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active">
+            active</a>
+        <a href="/questions/7358/python-performance-with-blender-operators?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest">
+            oldest</a>
+        <a class="youarehere" href="/questions/7358/python-performance-with-blender-operators?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes">
+            votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="7360"></a>
+<div id="answer-7360" class="answer accepted-answer" data-answerid="7360"  itemscope itemtype="http://schema.org/Answer" itemprop="acceptedAnswer">
+    <table>
+        <tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input type="hidden" name="_id_" value="7360">
+        <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">12</span>
+        <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Most operators cause implicit scene updates. It means that every object in the scene is checked and updated if necessary. If you add e.g. mesh primitives using <code>bpy.ops.mesh.primitive_cube_add()</code> in a loop, every iteration creates a new cube, starts a scene update and Blender iterates over all objects in the scene and updates objects if it has to.</p>
+
+<p>If you start with 0 objects, there will be 1 in the first iteration and 1 object needs to be checked in the scene update. In the second iteration, there will be 2 objects and 2 be checked. The first object was checked in the first iteration already (thus, 3 object updates in total). In the third iteration, there will be 3 objects and 3 + 2 + 1 = 6 objects checked in total. In iteration 1000, there will be 1000 objects and 500,500 checks have been carried out. Here's the formula where <code>n</code> is the number of objects:</p>
+
+<p><img src="http://i.stack.imgur.com/CarBS.png" alt="Non-linear runtime formula"></p>
+
+<p>As you see, the runtime isn't linear and could only be if there was only one update for every object <strong>after</strong> all have been added. You need to use the "low-level" API - RNA methods and attributes - instead of operators to achieve better runtimes. A scene update needs to be called manually like <code>bpy.context.scene.update()</code> with this approach.</p>
+
+<p>Many, but not all operator calls can be somehow replaced by "low-level" code. You can duplicate objects very efficiently like:</p>
+
+<pre><code>import bpy
+from mathutils import Vector
+
+ob = bpy.context.object
+obs = []
+sce = bpy.context.scene
+
+for i in range(-48, 48, 3):
+    for j in range(-48, 48, 3):
+        copy = ob.copy()
+        copy.location += Vector((i, j, 0))
+        copy.data = copy.data.copy() # also duplicate mesh, remove for linked duplicate
+        obs.append(copy)
+
+for ob in obs:
+    sce.objects.link(ob)
+
+sce.update() # don't place this in either of the above loops!
+</code></pre>
+
+<p>A good comparison between 4 different ways to do the same thing:</p>
+
+<ol>
+<li><p><code>bpy.ops.anim.keyframe_insert_menu()</code> - don't ever use this in a script, it is solely to show a menu for the user</p></li>
+<li><p><code>bpy.ops.anim.keyframe_insert()</code> - this is supposed to be used via the UI, not in script. Use operator calls only if there is no lower-level API!</p></li>
+<li><p><a href="http://www.blender.org/documentation/blender_python_api_2_69_release/bpy.types.bpy_struct.html#bpy.types.bpy_struct.keyframe_insert">Object.keyframe_insert()</a> - RNA method that can be called on an object, better</p></li>
+<li><p><a href="http://www.blender.org/documentation/blender_python_api_2_69_10/info_quickstart.html#animation">The low-level way</a> - add F-Curves and <code>keyframe_points</code> manually, fastest but you need to do alot yourself and consider several conditions (like object not having <code>animation_data</code> or an <code>animation_data.action</code>)</p></li>
+</ol>
+
+<p>Related (also examples included):</p>
+
+<ul>
+<li><p><a href="http://www.elysiun.com/forum/showthread.php?299435-Need-Help-Optimizing-A-Script-To-Make-It-Less-Time-Consuming">Need Help Optimizing A Script To Make It Less Time Consuming</a></p></li>
+<li><p><a href="http://blenderartists.org/forum/showthread.php?286325-Python-slowing-down-over-time">Python slowing down over time</a></p></li>
+</ul>
+    </div>
+    <table class="fw">
+    <tr>
+    <td class="vt">
+<div class="post-menu"><a href="/a/7360/22950" title="short permalink to this answer" class="short-link" id="link-post-7360">share</a><span class="lsep">|</span><a href="/posts/7360/edit" class="suggest-edit-post" title="revise and improve this post">edit</a><span class="lsep">|</span><a href="#"
+       class="flag-post-link"
+       title="flag this post for serious problems or moderator attention"
+       data-postid="7360">flag</a></div>                    </td>
+    <td align="right" class="post-signature">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="/posts/7360/revisions" title="show all edits to this post">edited <span title="2014-10-15 16:00:47Z" class="relativetime">Oct 15 '14 at 16:00</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        
+        <div class="-flair">
+            
+        </div>
+    </div>
+</div>    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2014-02-26 22:45:10Z" class="relativetime">Feb 26 '14 at 22:45</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="/users/1363/codemanx"><div class="gravatar-wrapper-32"><img src="https://i.stack.imgur.com/oskiS.png?s=32&amp;g=1" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="/users/1363/codemanx">CoDEmanX</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 15,372" dir="ltr">15.4k</span><span title="19 silver badges"><span class="badge2"></span><span class="badgecount">19</span></span><span title="56 bronze badges"><span class="badge3"></span><span class="badgecount">56</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-7360" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0"
+                       data-canpost="true"
+                       data-cansee="false"
+                       data-comments-unavailable="false"
+                       data-addlink-disabled="false">
+
+
+
+    <tr id="comment-25067" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                <a class="comment-up comment-up-off" title="this comment adds something useful to the post">upvote</a>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                                <td>
+                                    <a class="comment-flag" title="Flag this comment for serious problems or moderator attention">flag</a>
+                                </td>
+                        </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">According to <a href="http://www.blender.org/documentation/blender_python_api_2_72_release/bpy.types.SceneObjects.html#bpy.types.SceneObjects.link" rel="nofollow">Blender Python API docs</a> <code>bpy.context.scene.objects.link</code> runs <code>scene.update</code> every time it is invoked, so the last line in the code is superfluous and the whole situation is not very happy in that way.</span>
+                    &ndash;&nbsp;<a href="/users/3153/user2683246"
+                       title="192 reputation"
+                       class="comment-user">user2683246</a>
+                <span class="comment-date" dir="ltr"><span title="2014-10-15 12:55:20Z" class="relativetime-clean">Oct 15 '14 at 12:55</span></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25070" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                <a class="comment-up comment-up-off" title="this comment adds something useful to the post">upvote</a>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                                <td>
+                                    <a class="comment-flag" title="Flag this comment for serious problems or moderator attention">flag</a>
+                                </td>
+                        </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">The docs state &quot;Link object to scene, run <code>scene.update()</code> after&quot;, so it&#39;s telling you that you are supposed to call <code>scene.update()</code> - did you read &quot;runs...&quot; by chance? Even if it did cause an update, performance is still great compared to operator calls.</span>
+                    &ndash;&nbsp;<a href="/users/1363/codemanx"
+                       title="15,372 reputation"
+                       class="comment-user">CoDEmanX</a>
+                <span class="comment-date" dir="ltr"><span title="2014-10-15 15:55:33Z" class="relativetime-clean">Oct 15 '14 at 15:55</span></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25178" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                <a class="comment-up comment-up-off" title="this comment adds something useful to the post">upvote</a>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                                <td>
+                                    <a class="comment-flag" title="Flag this comment for serious problems or moderator attention">flag</a>
+                                </td>
+                        </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Yes, I did read both &quot;link...&quot; and &quot;run...&quot; as &quot;links...&quot; and &quot;runs...&quot; in the docs. Am I right that the second part of the phrase is ambiguous? I&#39;m not an English speaker, but suppose my reading to be a valid and more consistent one. Anyway I was to correct the last part of my comment. Yes, if objects are linked to a scene in a separate loop all at once, performance is really great. I&#39;ve changed my script so that all the lamps are generated without <code>bpy.ops</code> and the execution time has reduced</span>
+                    &ndash;&nbsp;<a href="/users/3153/user2683246"
+                       title="192 reputation"
+                       class="comment-user">user2683246</a>
+                <span class="comment-date" dir="ltr"><span title="2014-10-17 07:22:09Z" class="relativetime-clean">Oct 17 '14 at 7:22</span></span>
+                    <span class="edited-yes" title="this comment was edited 2 times"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25179" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                <a class="comment-up comment-up-off" title="this comment adds something useful to the post">upvote</a>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                                <td>
+                                    <a class="comment-flag" title="Flag this comment for serious problems or moderator attention">flag</a>
+                                </td>
+                        </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">one half from 30s to 15s. And there is more room for improvement as I still use bpy.ops for generating meshes. The other observations are also mostly consistent with what you says. Linking objects in the same loop where they are being created makes performance slightly even worse than when using bpy.ops. And scene.update() can be really omitted. Seems like when scene.objects.link(o) invocations are bunched together scene.update() runs only once at the end.</span>
+                    &ndash;&nbsp;<a href="/users/12/iklsr"
+                       title="24,282 reputation"
+                       class="comment-user">iKlsR<span class="mod-flair" title="moderator">&#9830;</span></a>
+                <span class="comment-date" dir="ltr"><span title="2014-10-17 11:40:08Z" class="relativetime-clean">Oct 17 '14 at 11:40</span></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+				    <tfoot>
+					    <tr>
+						    <td></td>
+						    <td class="comment-form">
+							    <form id="add-comment-7360" 
+							          class="" 
+							          data-placeholdertext="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></form>
+						    </td>
+					    </tr>
+				    </tfoot>
+		    </table>
+	    </div>
+
+        <div id="comments-link-7360" >
+
+                <a class="js-add-link comments-link "
+                   title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."
+                   href=#>add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href=# onclick=""></a>
+        </div>         
+    </td>
+</tr>    </table>
+</div>
+									<a name='new-answer'></a>
+						<form id="post-form" action="/questions/7358/answer/submit" method="post"  class="post-form">
+						    <input type="hidden" id="post-id" value="7358" />
+                            <input type="hidden" id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" />
+                            <input type="hidden" name="referrer" value="http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-of-object-b-via-python"/>
+							<h2 class="space">Your Answer</h2>
+
+
+        
+
+<script>
+    StackExchange.ready(function() {
+        initTagRenderer("".split(" "), "".split(" "));
+       
+        StackExchange.using("externalEditor", function() {
+                // Have to fire editor after snippets, if snippets enabled
+                if (StackExchange.options.snippets.enabled) {
+                    StackExchange.using("snippets", function() {
+                        createEditor();
+                    });
+                }
+                else {
+                    createEditor();
+                }
+            });
+
+            function createEditor() {
+                prepareEditor({
+                    heartbeatType: 'answer',
+                convertImagesToLinks: false,
+                reputationToPostImages: null,
+                bindNavPrevention: true,
+                postfix: "",
+                    onDemand: false,
+                    discardSelector: ".discard-answer"
+                    ,immediatelyShowMarkdownHelp:true
+                    });
+                
+
+        }
+    });  
+</script>
+
+
+<div id="post-editor" class="post-editor js-post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+    <div class="community-option">
+        <input id="communitymode" name="communitymode" type="checkbox" >
+        <label for="communitymode" title="Marking an answer community wiki encourages others to edit it by lowering the reputation barrier required to edit. However, you will not gain any upvote reputation from it. This cannot be undone.">community wiki</label>
+    </div>
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" type="hidden" value="45949e0d89399c3d084799a7d8379f1b">
+        <input id="author" name="author" type="text">
+    </div>
+
+
+
+</div>
+							<div style="position: relative;">
+								
+								
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" type="submit" value="Post Your Answer" tabindex="110">
+									<a href="#" class="btn-clear discard-answer dno">discard</a>
+								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you&#39;re looking for?							Browse other questions tagged <a href="/questions/tagged/python" class="post-tag" title="show questions tagged &#39;python&#39;" rel="tag">python</a> <a href="/questions/tagged/performance" class="post-tag" title="show questions tagged &#39;performance&#39;" rel="tag">performance</a>  or <a href="/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2014-02-26 21:38:06Z"><b>2 years ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>2609 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="?lastactivity" class="lastactivity-link" title="2014-10-17 07:22:09Z">1 year ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </table>
+			    </div>
+			<div class="module community-bulletin" data-tracker="cb=1">
+    <div class="related">
+                <div class="bulletin-title">
+                    Featured on Meta
+                </div>
+                <hr />
+    <div class="spacer">
+        <div class="bulletin-item-type">
+                <a href="http://meta.blender.stackexchange.com/questions/1067/would-it-be-helpful-to-create-a-frequenty-asked-questions-page" class="question-hyperlink">
+<div class="favicon favicon-blendermeta" title="Blender Meta Stack Exchange"></div>                </a>
+            </div>
+                <div class="bulletin-item-content">
+                    <a href="http://meta.blender.stackexchange.com/questions/1067/would-it-be-helpful-to-create-a-frequenty-asked-questions-page" class="question-hyperlink">Would it be helpful to create a Frequenty Asked Questions page?</a>
+                </div>
+                <br class="cbt" />
+            </div>
+    <div class="spacer">
+        <div class="bulletin-item-type">
+                <a href="http://meta.blender.stackexchange.com/questions/1065/blender-top-user-swag" class="question-hyperlink">
+<div class="favicon favicon-blendermeta" title="Blender Meta Stack Exchange"></div>                </a>
+            </div>
+                <div class="bulletin-item-content">
+                    <a href="http://meta.blender.stackexchange.com/questions/1065/blender-top-user-swag" class="question-hyperlink">Blender — Top User Swag!</a>
+                </div>
+                <br class="cbt" />
+            </div>
+    </div>
+</div>			
+			<style type="text/css">
+    .ads { margin-left: 60px; }
+    .ad-container { width: 300px; height: 250px; margin-right: 20px; margin-bottom: 20px; }
+    .ad-container .ad { height: 250px; }
+    .ad-container .footer-container { overflow: hidden; height: 30px; position: relative; top: -30px; }
+    .ad-container .footer-container .footer { font-family: Arial,Helvetic,Sans-Serif; font-size: 12px; text-align: center; padding-top: 9px; background-color: #000; color: #EFF; opacity: 0.9; filter: alpha(opacity=90); top: 30px; height: 30px; position: relative; }
+    .ad-container a:hover { text-decoration: underline; }
+    #adzerk2 { height: 250px; }
+</style>
+<script>
+    StackExchange.ready(function () {
+        $(".ad-container").hover(
+            function () {
+                $(".ad-container .footer-container .footer").stop(true, true).animate({ top: "0px" }, "fast");
+            },
+            function () {
+                $(".ad-container .footer-container .footer").animate({ top: "30px" }, "fast");
+            });
+    });
+</script>
+    <div class="ad-container">    
+        <div class="ad">    
+        <a href="http://meta.blender.stackexchange.com/ads/ct/1016?url=http%3a%2f%2fblend-exchange.giantcowfilms.com%2f%3fref%3dbe-community-add-2&s=342f8854155224fb0f5a8344811376b2d7d5aea0b911b46f531fc4556d6cae81" rel="nofollow" target="_blank"><img src="http://blend-exchange.giantcowfilms.com/dyimg/communityAdTwo.png" alt="Blend-Exchange!" title="Blend-Exchange!" width="300" height="250"></a>
+        </div>
+        <div class="footer-container">
+            <div class="footer">
+                17 votes · <a href="http://meta.blender.stackexchange.com/questions/1009#1016" title="click to comment on this ad" target="_blank">comment</a> · <a href="http://meta.blender.stackexchange.com/ads/display/1009" target="_blank">stats</a>
+            </div>
+        </div>
+    </div>
+			  
+    
+            <div class="module sidebar-linked">
+	<h4 id="h-linked">Linked</h4>
+	<div class="linked" data-tracker="lq=1">
+<div class="spacer">
+	<a href="/q/14814" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">3</div>
+	</a>
+	<a href="/questions/14814/object-creation-slows-over-time" class="question-hyperlink">Object creation slows over time</a>
+</div><div class="spacer">
+	<a href="/q/1182" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">6</div>
+	</a>
+	<a href="/questions/1182/blender-becomes-very-slow-with-large-amount-of-objects-sharing-mesh-data" class="question-hyperlink">Blender becomes very slow with large amount of objects sharing mesh data</a>
+</div><div class="spacer">
+	<a href="/q/2848" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">11</div>
+	</a>
+	<a href="/questions/2848/why-avoid-bpy-ops" class="question-hyperlink">Why avoid bpy.ops?</a>
+</div><div class="spacer">
+	<a href="/q/9200" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">4</div>
+	</a>
+	<a href="/questions/9200/make-object-a-a-parent-of-object-b-via-python" class="question-hyperlink">make object A a parent of object B via Python</a>
+</div><div class="spacer">
+	<a href="/q/31348" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">5</div>
+	</a>
+	<a href="/questions/31348/duplicating-non-primitive-mesh-with-python" class="question-hyperlink">Duplicating non primitive mesh with Python</a>
+</div><div class="spacer">
+	<a href="/q/7598" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">6</div>
+	</a>
+	<a href="/questions/7598/rotation-around-the-cursor-with-low-level-python-no-bpy-ops" class="question-hyperlink">Rotation around the cursor with low-level python (no bpy.ops)</a>
+</div><div class="spacer">
+	<a href="/q/7581" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">4</div>
+	</a>
+	<a href="/questions/7581/blender-gets-very-slow-to-draw-a-scene-having-large-number-of-plane" class="question-hyperlink">Blender gets very slow to draw a scene having large number of plane?</a>
+</div><div class="spacer">
+	<a href="/q/16084" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">2</div>
+	</a>
+	<a href="/questions/16084/how-to-animate-object-with-data-file" class="question-hyperlink">How to animate object with data file</a>
+</div><div class="spacer">
+	<a href="/q/7468" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">3</div>
+	</a>
+	<a href="/questions/7468/blender-not-responding-while-running-my-script" class="question-hyperlink">Blender not responding while running my script</a>
+</div><div class="spacer">
+	<a href="/q/39721" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">3</div>
+	</a>
+	<a href="/questions/39721/how-can-i-create-many-objects-quickly" class="question-hyperlink">How can I create many objects quickly?</a>
+</div>					<div class="spacer more">
+				<a href="/questions/linked/7358">see more linked questions…</a>
+			</div>
+	</div>
+</div>
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer">
+<a href="/q/1182" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">6
+    </div>
+</a><a href="/questions/1182/blender-becomes-very-slow-with-large-amount-of-objects-sharing-mesh-data" class="question-hyperlink">Blender becomes very slow with large amount of objects sharing mesh data</a>
+</div>
+<div class="spacer">
+<a href="/q/14571" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">2
+    </div>
+</a><a href="/questions/14571/finding-python-operator-for-every-tool-within-blender" class="question-hyperlink">Finding python operator for every tool within Blender</a>
+</div>
+<div class="spacer">
+<a href="/q/15624" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">0
+    </div>
+</a><a href="/questions/15624/will-running-blender-on-ram-drives-increase-blenders-speed" class="question-hyperlink">Will running Blender on RAM Drives increase Blender&#39;s &ldquo;Speed&rdquo;?</a>
+</div>
+<div class="spacer">
+<a href="/q/16513" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">2
+    </div>
+</a><a href="/questions/16513/python-performance-without-blender-operators" class="question-hyperlink">Python performance without Blender operators</a>
+</div>
+<div class="spacer">
+<a href="/q/21606" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">1
+    </div>
+</a><a href="/questions/21606/blender-python-math-operations-on-vertex" class="question-hyperlink">Blender python math operations on vertex</a>
+</div>
+<div class="spacer">
+<a href="/q/31465" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="/questions/31465/blender-crashing-as-soon-as-it-opens" class="question-hyperlink">Blender crashing as soon as it opens?</a>
+</div>
+<div class="spacer">
+<a href="/q/33240" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="/questions/33240/how-do-i-measure-the-loading-portion-of-the-rendering-process-with-python" class="question-hyperlink">How do I measure the loading portion of the rendering process with Python?</a>
+</div>
+<div class="spacer">
+<a href="/q/34263" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">1
+    </div>
+</a><a href="/questions/34263/blender-runs-really-slowly-on-my-cintiq-22hd" class="question-hyperlink">Blender runs really slowly on my Cintiq 22HD</a>
+</div>
+<div class="spacer">
+<a href="/q/36516" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">2
+    </div>
+</a><a href="/questions/36516/creating-handling-pathfinding-large-world-waypoints-in-blender" class="question-hyperlink">Creating/Handling pathfinding large world waypoints in Blender</a>
+</div>
+<div class="spacer">
+<a href="/q/43745" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="/questions/43745/weird-bmesh-performance-when-creating-new-vertices" class="question-hyperlink">Weird bmesh performance when creating new vertices</a>
+</div>
+
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module">
+    <h4>
+        <a href="//stackexchange.com/questions?tab=hot" 
+           class="js-gps-track" 
+           data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li >
+                <div class="favicon favicon-cs" title="Computer Science Stack Exchange"></div><a href="http://cs.stackexchange.com/questions/56783/can-any-finite-problem-be-in-np-complete" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:419 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can any finite problem be in NP-Complete?
+                </a>
+
+            </li>
+            <li >
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/36941526/why-cant-atomicboolean-be-a-replacement-for-boolean" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why can&#39;t AtomicBoolean be a replacement for Boolean?
+                </a>
+
+            </li>
+            <li >
+                <div class="favicon favicon-gis" title="Geographic Information Systems Stack Exchange"></div><a href="http://gis.stackexchange.com/questions/191771/populating-an-attribute-field" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:79 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Populating an attribute field
+                </a>
+
+            </li>
+            <li >
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="http://academia.stackexchange.com/questions/67891/how-important-is-it-to-submit-papers-early-to-a-conference" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How important is it to submit papers early to a conference?
+                </a>
+
+            </li>
+            <li >
+                <div class="favicon favicon-ell" title="English Language Learners Stack Exchange"></div><a href="http://ell.stackexchange.com/questions/88660/i-wonder-if-the-word-appreciate-is-too-formal" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:481 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    I wonder if the word &#39;appreciate&#39; is too formal?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="http://academia.stackexchange.com/questions/67907/i-came-across-plagiarism-whom-should-i-inform-if-at-all" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    I came across plagiarism. Whom should I inform if at all?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1764278/number-of-points-of-accumulation-of-a-sequence" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Number of points of accumulation of a sequence
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-movies" title="Movies &amp; TV Stack Exchange"></div><a href="http://movies.stackexchange.com/questions/52362/a-movie-in-which-aliens-attack-the-earth-and-destroy-it" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:367 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    A movie in which aliens attack the Earth and destroy it
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-cooking" title="Seasoned Advice"></div><a href="http://cooking.stackexchange.com/questions/68659/how-do-i-drain-sauerkraut" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:49 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How do I drain sauerkraut?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-tex" title="TeX - LaTeX Stack Exchange"></div><a href="http://tex.stackexchange.com/questions/307063/how-to-do-the-linear-program-in-format" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:85 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to do the linear program in format
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1764472/absolute-value-graph-sketching" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Absolute value graph sketching
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-codereview" title="Code Review Stack Exchange"></div><a href="http://codereview.stackexchange.com/questions/127048/todo-list-program-efficiency" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:196 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    ToDo List Program Efficiency
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/322524/word-to-describe-someone-who-goes-to-all-the-events-in-town" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Word to describe someone who goes to all the events in town!
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/40949/whats-the-smallest-change-to-physics-required-to-allow-magic" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What&#39;s the smallest change to physics required to allow magic?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/126439/the-dothraki-cut-their-braids-after-defeat-in-battle-but-when-would-a-dothraki" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    The Dothraki cut their braids after defeat in battle, but when would a Dothraki be spared after being defeated?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-superuser" title="Super User"></div><a href="http://superuser.com/questions/1070830/why-does-the-output-of-generate-unintelligible-text" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:3 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why does the output of &gt; generate unintelligible text?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1764498/finding-a-basis-for-the-set-of-polynomials-where-f1-f-1-0" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Finding a basis for the set of polynomials where f(1)=f(-1)=0
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/66042/i-broke-an-appliance-at-a-company-supplied-house-should-i-turn-myself-in" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    I broke an appliance at a company-supplied house -- should I turn myself in?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/36945552/is-it-safe-to-rename-argc-and-argv-in-main-function" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is it safe to rename argc and argv in main function?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-mechanics" title="Motor Vehicle Maintenance &amp; Repair Stack Exchange"></div><a href="http://mechanics.stackexchange.com/questions/29113/why-has-my-car-burnt-through-all-the-oil" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:224 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why has my car burnt through all the oil?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/322413/what-does-it-imply-when-someone-is-called-lucifer-in-the-flesh" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What does it imply when someone is called “Lucifer in the flesh”?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-japanese" title="Japanese Language Stack Exchange"></div><a href="http://japanese.stackexchange.com/questions/33867/what-is-the-verb-ending-of-%e3%82%8f%e3%82%8c%e3%82%93-mean" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:257 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the verb ending of われん mean?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/40972/how-would-the-2016-human-scientific-community-react-if-a-massive-space-faring-al" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How would the 2016 human scientific community react if a massive space-faring alien &quot;whale&quot; entered the Solar System?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/321865/what-is-a-word-for-a-condition-one-is-born-with" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is a word for a condition one is born with?
+                </a>
+
+            </li>
+    </ul>
+
+        <a href="#" 
+           class="show-more js-show-more js-gps-track" 
+           data-gps-track="posts_hot_network.click({ item_type:3, location:11 })">
+            more hot questions
+        </a>
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="/feeds/question/7358" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	<script>
+StackExchange.ready(function(){$.get('/posts/7358/ivc/9c58');});
+</script>
+<noscript>
+    <div><img src="/posts/7358/ivc/9c58" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">lang-py</div></div>
+
+    <script>
+        $('#wmd-input').one("keypress", function() {
+            $.ajax({
+                url: '/accounts/email-settings-form',
+                cache: false,
+                success: function(data) {
+                    $('#submit-button').parent().prepend(data);
+                }
+            });
+        });
+
+    </script>
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                    <a href="http://stackoverflow.com/company/about">about us</a>
+                        <a href="/tour">tour</a>
+                    <a href="/help">help</a>
+                    <a href="http://blog.stackoverflow.com?blb=1">blog</a>
+                        <a href="http://chat.stackexchange.com">chat</a>
+                    <a href="http://data.stackexchange.com">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackoverflow.com/company/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick='StackExchange.switchMobile("on")'>mobile</a>
+                    <b><a href="/contact">contact us</a></b>
+                        <b><a href="http://meta.blender.stackexchange.com">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tr>
+            <th colspan=3>
+                Technology
+            </th>
+            <th >
+                Life / Arts
+            </th>
+            <th >
+                Culture / Recreation
+            </th>
+            <th >
+                Science
+            </th>
+            <th >
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="//stackoverflow.com" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="//serverfault.com" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="//superuser.com" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="//webapps.stackexchange.com" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="//askubuntu.com" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="//webmasters.stackexchange.com" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="//gamedev.stackexchange.com" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="//tex.stackexchange.com" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="//programmers.stackexchange.com" title="professional programmers interested in conceptual questions about software development">Programmers</a></li>
+                        <li><a href="//unix.stackexchange.com" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                        <li><a href="//apple.stackexchange.com" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="//wordpress.stackexchange.com" title="WordPress developers and administrators">WordPress Development</a></li>
+                        <li><a href="//gis.stackexchange.com" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="//electronics.stackexchange.com" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="//android.stackexchange.com" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="//security.stackexchange.com" title="information security professionals">Information Security</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="//dba.stackexchange.com" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="//drupal.stackexchange.com" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="//sharepoint.stackexchange.com" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="//ux.stackexchange.com" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="//mathematica.stackexchange.com" title="users of Mathematica">Mathematica</a></li>
+                        <li><a href="//salesforce.stackexchange.com" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                        <li><a href="//expressionengine.stackexchange.com" title="administrators, end users, developers and designers for ExpressionEngine&#174; CMS">ExpressionEngine&#174; Answers</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (13)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="//photo.stackexchange.com" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="//scifi.stackexchange.com" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="//graphicdesign.stackexchange.com" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="//movies.stackexchange.com" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                        <li><a href="//cooking.stackexchange.com" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="//diy.stackexchange.com" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="//money.stackexchange.com" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                        <li><a href="//academia.stackexchange.com" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (9)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="//english.stackexchange.com" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="//skeptics.stackexchange.com" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="//judaism.stackexchange.com" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="//travel.stackexchange.com" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="//christianity.stackexchange.com" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="//gaming.stackexchange.com" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="//bicycles.stackexchange.com" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="//rpg.stackexchange.com" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (21)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="//math.stackexchange.com" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="//stats.stackexchange.com" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="//cstheory.stackexchange.com" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="//physics.stackexchange.com" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="//mathoverflow.net" title="professional mathematicians">MathOverflow</a></li>
+                        <li><a href="//chemistry.stackexchange.com" title="scientists, academics, teachers and students">Chemistry</a></li>
+                        <li><a href="//biology.stackexchange.com" title="biology researchers, academics, and students">Biology</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (5)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="//stackapps.com" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="//meta.stackexchange.com" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="//area51.stackexchange.com" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="//careers.stackoverflow.com">Stack Overflow Careers</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</table>
+                </div>
+            </div>
+            <div id="copyright">
+                site design / logo &#169; 2016 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2016.4.29.3525
+            </div>
+        </div>
+    </div>
+    <noscript>
+        <div id="noscript-warning">Blender Stack Exchange works best with JavaScript enabled<img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"></div>
+    </noscript>
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-5620270-24', {'cookieDomain': 'stackexchange.com', 'userId': '5707622'});
+                ga('set', 'dimension1', '5707622');                 ga('set', 'dimension2', '|python|performance|');         ga('send', 'pageview');
+        var _qevents = _qevents || [],
+            _comscore = _comscore || [];
+        (function () {
+            var ssl='https:'==document.location.protocol,
+                s=document.getElementsByTagName('script')[0],
+                qc=document.createElement('script');
+            qc.async=true;
+            qc.src=(ssl?'https://secure':'http://edge')+'.quantserve.com/quant.js';
+            s.parentNode.insertBefore(qc, s);
+            var sc=document.createElement('script');
+            sc.async=true;
+            sc.src=(ssl?'https://sb':'http://b') + '.scorecardresearch.com/beacon.js';
+            s.parentNode.insertBefore(sc, s);
+        })();
+        _comscore.push({ c1: "2", c2: "17440561" });
+        _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+    </script>
+        
+    
+    </body>
+</html>

@@ -1,0 +1,78 @@
+'''
+Object placment manager
+RP = Relative Position
+'''
+
+import bpy
+
+
+def CabinetOne(RPManager):
+    origin = [0,1,0]
+    positions = [1,2,1]
+    name = 'Cabinet1'
+    RPManager.AddRPGroup(origin, positions, name)
+    
+    origin = [0,0,0]
+    positions = [1,2,1]
+    name = 'Cabinet2'
+    RPManager.AddRPGroup(origin, positions, name)
+    
+class RPManager():
+    '''
+    Manages our 3D positional grid for aligning and updating objects.
+    RP = Relative Positions
+    '''
+    def __init__(self):
+        #Stores all Relative Position Grids
+        #See notation for details
+        self.rp_groups = []
+    
+    def AddRPGroup(self, origin, positions, name):
+        
+        #Stores number of XYZ Rows we want in group
+        rp_rows = [[],[],[]]
+        
+        #Add Rows
+        for axis in range(3):
+            for amount in range(positions[axis]):
+                rp_rows[axis].extend([0])
+        
+        #Put together remaining data and add to groups
+        rp_group = [name, origin, rp_rows]
+        self.rp_groups.append(rp_group)
+        self.RPGroupUpdateLocation()
+        
+    
+    def RPGroupUpdateLocation(self):
+        for axis in range(3):
+            for vectors in self.rp_groups:
+                
+        
+    '''
+    def RPGroupSort(self):
+        #Places groups in order of origin point
+
+        origins = []
+        #Get all origins
+        for group in self.rp_groups:
+            origins.append(group[1])
+            print(origins)
+            
+        for axis in range(3):
+            for vectors in origins:
+                
+              
+        #reorders a list
+        mylist=['a','b','c','d','e']
+        myorder=[3,2,0,1,4]
+        mylist = [ mylist[i] for i in myorder]
+        #print(mylist)
+    '''
+    
+    def RPGrid(self, origin, rp_rows):
+        
+        pass
+    
+
+RPM = RPManager()
+CabinetOne(RPM)
