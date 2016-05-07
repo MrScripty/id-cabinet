@@ -1,6 +1,9 @@
 import operator as oper
 import itertools as itr
 
+#Globals
+rpa_dictionary = {}
+
 
 class RPArray():
     '''
@@ -8,11 +11,11 @@ class RPArray():
     positions are defined by arbitrary size values.
     '''
     def __init__(self, name, location=[0,0,0]):
-        self.rp_origin = location
-        self.rp_name = name
+        self.rpa_origin = location
+        self.rpa_name = name
 
         #[axis][level][length(0) or accumulative(1)]
-        self.rp_array = (
+        self.rpa_array = (
             [[[1,0]],
             [[1,0]],
             [[1,0]]])
@@ -27,11 +30,11 @@ class RPArray():
         '''
         if size == 0:
             #Remove Row
-            if len(self.rp_array[axis]) > 1:
-                del(self.rp_array[axis][index])
+            if len(self.rpa_array[axis]) > 1:
+                del(self.rpa_array[axis][index])
         else:
             #Add row
-            self.rp_array[axis].insert(index, [size, 0])        
+            self.rpa_array[axis].insert(index, [size, 0])        
     
     def ResizeRow(self, axis, index, size):
         '''
@@ -44,7 +47,7 @@ class RPArray():
             self.ResizeArray(axis, index, 0)
         else:
             #Resize the row
-            self.rp_array[axis][index][0] = size
+            self.rpa_array[axis][index][0] = size
 
     def AccumulateArray(self):
         '''
@@ -52,46 +55,126 @@ class RPArray():
         in array.
         '''
         for axis in range(3):
-            last = self.rp_array[axis][0][0]
-            for index, i in enumerate(self.rp_array[axis]):
+            for index, i in enumerate(self.rpa_array[axis]):
                 if index == 0:
-                    self.rp_array[axis][index][1] = self.rp_array[axis][index][0]
-                    continue
-                self.rp_array[axis][index][1] = last + self.rp_array[axis][index][0]
-                last = self.rp_array[axis][index][0]
+                    self.rpa_array[axis][index][1] = 0
+                else:
+                    self.rpa_array[axis][index][1] = self.rpa_array[axis][index-1][0] + self.rpa_array[axis][index-1][1]
 
     def ReturnIndex(self, index):
         '''
-        Returns XnYnZn location and XpYpZp size of specified index.
+        Returns [[Xn,Yn,Zn],[Xp,Yp,Zp]] location and size of specified index.
         Index is Vec3 with each value representing position along axis.
         '''
-        position = [[],[],[]]
-        position[0] = self.rp_array[0][index[0]]
-        position[1] = self.rp_array[1][index[1]]
-        position[2] = self.rp_array[2][index[2]]
+        position = [[0,0,0],[0,0,0]]
+        for axis, value in enumerate(position[0]):
+            position[0][axis] = self.rpa_array[axis][index[axis]][1]
+        for axis, value in enumerate(position[1]):
+            position[1][axis] = self.rpa_array[axis][index[axis]][0]
+        
         return(position)
-
-    def UpdateCall():
+    
+    def NameRPArray(self, name=None):
         '''
-        Calls objects outside instance when indexes are altered.
+        Returns name of instance if name is None.
+        Renames instance and updates RPADictionary if name provided.
         '''
-        pass
+        if name:
+            old_name = self.rpa_name
+            self.rpa_name = name
+            RPADicUpdate(old_name)
+        else:
+            return(self.rpa_name)
 
 
-#Create array
-rpa = RPArray('SpamArray')
-print(rpa.rp_array)
-#Add row to array (can also remove)
-rpa.ResizeArray(0, 1, 5)
-rpa.ResizeArray(0, 1, 3
-)
-print(rpa.rp_array)
-#Resize a row
-rpa.ResizeRow(1, 0, 6)
-print(rpa.rp_array)
-#Updates rp_array with current locations
-rpa.AccumulateArray()
-print(rpa.rp_array)
-#Get position and size of index
-position = rpa.ReturnIndex([1,0,0])
-print(position)
+def RPADictionary(instance=None, name=None):
+    '''
+    Adds new instances to rpa_dictionary and returns instance of given name.
+    New instance is added when instance is passed.
+    '''
+    if instance:
+        #Add to dic
+        name = instance.NameRPArray()
+        rpa_dictionary[name] = instance
+    else:
+        #return instance
+        return(rpa_dictionary[name])
+
+def RPADicRemove(name):
+    '''
+    Removes an entry from rpa_dictionary.
+    Name is name of entry to remove.
+    '''
+    if name:
+        del(rpa_dictionary[name])
+
+def RPADicUpdate(name):
+    '''
+    Updates rp_dictionary names.
+    Name is name of instance before renaming.
+    If name is passed will update single entry only.
+    If no name passed will recursivly update all entrys.
+    '''
+    if name:
+        #Update single entry
+        instance = rpa_dictionary[name]
+        new_name = instance.NameRPArray()
+        rpa_dictionary[new_name] = rpa_dictionary.pop(name)
+    else:
+        #Update all entrys
+        for name, instance in rpa_dictionary.items():
+            name = instance.NameRPArray()
+            rpa_dictionary[name] = instance
+    
+    
+def MakeRPArray(name, location=[0,0,0], rows=[0,0,0]):
+    '''
+    Create a new rparray.
+    Abstracts internal workings of pyrpmanager to provide a simple API
+    '''
+    #Create a new RPArray
+    instance = RPArray(name)
+    #Add RPArray to RPADictionary so we have a record.
+    RPADictionary(instance)
+    return(instance)
+    
+
+
+
+
+
+if __name__ == '__main__':
+    print('Testing pyrpmanager functions...')
+    #New array
+    instance = MakeRPArray('SpamArray')
+    instance2 = MakeRPArray('SpamArray2')
+    print(instance.rpa_array)
+    #Check if instance added to RPADictionary
+    print(rpa_dictionary)
+    #New row
+    instance.ResizeArray(0,0,2)
+    print(instance.rpa_array)
+    #remove row
+    instance.ResizeArray(0,0,0)
+    print(instance.rpa_array)
+    #Resize row
+    instance.ResizeRow(0,0,7)
+    print(instance.rpa_array)
+    #Get name
+    print(instance.NameRPArray())
+    #Change name
+    instance.NameRPArray('NewSpam')
+    print(instance.NameRPArray())
+    #See if RPADictionary updated to new name
+    print(RPADictionary(name='NewSpam'))
+    #New row
+    instance.ResizeArray(0,0,2)
+    print(instance.rpa_array)
+    #New row
+    instance.ResizeArray(0,0,3)
+    print(instance.rpa_array)
+    #Calculate XYZ locations
+    instance.AccumulateArray()
+    print(instance.rpa_array)
+    #Get XYZ XpYpZp of index
+    print(instance.ReturnIndex([1,0,0]))
