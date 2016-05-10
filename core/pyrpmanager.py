@@ -1,7 +1,10 @@
 import operator as oper
 import itertools as itr
 
-#Globals
+#Stores relations between RPArrays in a tree like structure 
+rpa_tree = []
+
+#Depreciated
 rpa_dictionary = {}
 
 
@@ -14,11 +17,11 @@ class RPArray():
         self.rpa_origin = location
         self.rpa_name = name
 
-        #[axis][level][length(0) or accumulative(1)]
+        #[axis][level][length(0), accumulative(1), lock(2)]
         self.rpa_array = (
-            [[[1,0]],
-            [[1,0]],
-            [[1,0]]])
+            [[[1,0,False]],
+            [[1,0,False]],
+            [[1,0,False]]])
             
 
     def ResizeArray(self, axis, index, size):
@@ -40,14 +43,9 @@ class RPArray():
         '''
         Assignes a new size/length to the given row. Axis is Int from 0-2 
         representing XYZ. Index is the row to be altered. Size is length.
-        If row is given size 0 ResizeArray() will automaticaly be called to
-        delete it from rp_array.
         '''
-        if size == 0:
-            self.ResizeArray(axis, index, 0)
-        else:
-            #Resize the row
-            self.rpa_array[axis][index][0] = size
+        #Resize the row
+        self.rpa_array[axis][index][0] = size
 
     def AccumulateArray(self):
         '''
@@ -65,6 +63,7 @@ class RPArray():
         '''
         Returns [[Xn,Yn,Zn],[Xp,Yp,Zp]] location and size of specified index.
         Index is Vec3 with each value representing position along axis.
+        Remember to use AccumulateArray() to update XpYpZp.
         '''
         position = [[0,0,0],[0,0,0]]
         for axis, value in enumerate(position[0]):
@@ -77,18 +76,24 @@ class RPArray():
     def NameRPArray(self, name=None):
         '''
         Returns name of instance if name is None.
-        Renames instance and updates RPADictionary if name provided.
+        Renames instance if name provided.
+        RPATree must be updated after a name change.
         '''
         if name:
-            old_name = self.rpa_name
             self.rpa_name = name
-            RPADicUpdate(old_name)
         else:
             return(self.rpa_name)
+        
+    def ScaleRPArray(self):
+        '''
+        Resizes rpa_array to conform with
+        '''
+        pass
 
 
 def RPADictionary(instance=None, name=None):
     '''
+    Depreciated
     Adds new instances to rpa_dictionary and returns instance of given name.
     New instance is added when instance is passed.
     '''
@@ -102,6 +107,7 @@ def RPADictionary(instance=None, name=None):
 
 def RPADicRemove(name):
     '''
+    Depreciated
     Removes an entry from rpa_dictionary.
     Name is name of entry to remove.
     '''
@@ -110,6 +116,7 @@ def RPADicRemove(name):
 
 def RPADicUpdate(name):
     '''
+    Depreciated
     Updates rp_dictionary names.
     Name is name of instance before renaming.
     If name is passed will update single entry only.
